@@ -1,24 +1,17 @@
 package car
 
 import (
-	"context"
-	"log"
-
 	"github.com/alextanhongpin/go-onion/internal/database"
+	"github.com/alextanhongpin/go-onion/internal/schema"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 // New returns a new car service
-func New(db database.Client) string {
-	model := NewModel(NewStore(db))
-	ctx := context.Background()
+func New(db database.Client, router *httprouter.Router, schema *schema.Loader) *httprouter.Router {
+	route := NewRoute(NewModel(NewStore(db), schema))
 
-	// Test the model, should move this to unit test
-	res, err := model.One(ctx, OneRequest{Name: "hello world"})
-	if err != nil {
-		log.Fatal(err)
-	}
-	// TODO: Create the route for the service and return it
-	// route := NewRoute(model)
-	// router.Get("/car", route.GetOne)
-	return res.Name
+	// TODO: Correct the naming, as it will only return one car for now
+	router.GET("/cars", route.GetOne)
+	return router
 }

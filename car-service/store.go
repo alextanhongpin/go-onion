@@ -11,9 +11,9 @@ type store struct {
 }
 
 func (s store) One(ctx context.Context, req OneRequest) (*OneResponse, error) {
-	res := s.db.Query("SELECT * FROM *")
+	_ = s.db.Query("SELECT * FROM *")
 	return &OneResponse{
-		Name: res + ": " + req.Name,
+		Name: req.Name,
 	}, nil
 }
 

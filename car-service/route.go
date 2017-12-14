@@ -1,32 +1,43 @@
 package car
 
-// import (
-// 	"encoding/json"
-// 	"net/http"
-// )
+import (
+	"context"
+	"encoding/json"
+	"net/http"
 
+	"github.com/julienschmidt/httprouter"
+)
 
-// type route struct {
-// 	model Model
-// }
+type route struct {
+	model Model
+}
 
-// func (r route) GetOne (w http.ResponseWriter, r* http.Request) {
-// 	var req OneRequest
-// 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return 
-// 	}
+func (rt route) GetOne(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	// var req OneRequest
+	// if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+	// 	http.Error(w, err.Error(), http.StatusBadRequest)
+	// 	return
+	// }
 
-// 	res := r.model.One(req)
-	
-// 	if err := json.NewEncoder(w).Encode(res); err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return 
-// 	}
-// }
+	req := OneRequest{
+		Name: r.URL.Query().Get("name"),
+	}
 
-// func NewRoute (model Model) *route {
-// 	return &route{
-// 		model: model,
-// 	}
-// }
+	res, err := rt.model.One(context.Background(), req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(res); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
+
+// NewRoute returns a pointer to the route struct
+func NewRoute(model Model) Route {
+	return &route{
+		model: model,
+	}
+}

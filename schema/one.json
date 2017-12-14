@@ -1,0 +1,15 @@
+{
+  "id": "#one",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "description": "Get a car request",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 5
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
