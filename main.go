@@ -16,10 +16,13 @@ var schemas map[string]string
 func init() {
 	schemas = make(map[string]string)
 	// TODO: Serve static json schemas and load them from the url
-	schemas["oneRequest"] = "file:///Users/alextanhongpin/Documents/golang/src/github.com/alextanhongpin/go-onion/schema/one.json"
+	schemas["car:one_request"] = "file:///Users/alextanhongpin/Documents/golang/src/github.com/alextanhongpin/go-onion/schema/one.json"
 }
 
+const port = ":8080"
+
 func main() {
+
 	router := httprouter.New()
 	db := database.New()
 	s := schema.New(schemas)
@@ -27,6 +30,6 @@ func main() {
 	// TODO: car service should return a router with endpoints
 	router = car.New(db, router, s)
 
-	log.Println("listening to port *:8080. press ctrl + c to cancel.")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Printf("listening to port *%s. press ctrl + c to cancel.\n", port)
+	log.Fatal(http.ListenAndServe(port, router))
 }

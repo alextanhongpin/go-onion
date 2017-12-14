@@ -13,15 +13,10 @@ type model struct {
 
 func (m model) One(ctx context.Context, req OneRequest) (*OneResponse, error) {
 	// Perform validation and composition of business logic here
-	errors := m.schema.Validate("oneRequest", req)
-	if len(errors) > 0 {
+	if errors := m.schema.Validate("car:one_request", req); len(errors) > 0 {
 		return nil, errors[0]
 	}
-	res, err := m.store.One(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+	return m.store.One(ctx, req)
 }
 
 // NewModel returns a new model that wraps the store
