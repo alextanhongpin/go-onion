@@ -13,6 +13,13 @@ type Store interface {
 	One(context.Context, OneRequest) (*OneResponse, error)
 }
 
+// Request represents the interface for the request objects
+type Request interface {
+	Validate() error
+	ToJSON () (error, []byte)
+	FromJSON ([]byte) error
+}
+
 // Model contains business logic or composition of business logic
 // and does not access the database directly. Validation should be
 // carried out here
@@ -28,6 +35,15 @@ type Route interface {
 // OneRequest is a sample request to the service
 type OneRequest struct {
 	Name string `json:"name"`
+}
+
+
+func (o *OneRequest) Validate () error {
+	// Perform business model validation here, e.g. through JSON Schema
+	if o.Name == "" {
+// 		return errors.New("name cannot be empty")
+	}
+	return nil
 }
 
 // OneResponse is a sample response from the one service
