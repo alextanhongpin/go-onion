@@ -23,7 +23,7 @@ func (rt route) GetOne(w http.ResponseWriter, r *http.Request, _ httprouter.Para
 		Name: r.URL.Query().Get("name"),
 	}
 
-	res, err := rt.model.One(context.Background(), req)
+	res, err := rt.model.One(r.Context(), req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
