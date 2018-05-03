@@ -9,3 +9,11 @@ Each folder will contain the following files:
 3. `route.go` which is the HTTP Endpoint for the service. Is responsible for constructing the request params for the service and returning the response or error after calling the service. Dumb endpoint, as it does not contain any business logic. Makes it easier to swap transport (GraphQL, gRPC, cron, etc) since the core logic is contained in the `Model`.
 4. `main.go` which binds the `Model`, `Store` and `Route` together through dependency injection.
 5. `interface.go` which contains the interface for each component and also define the request and response structs.
+
+## TODO
+
+- add pprof for cpu, mem, alloc
+- add timeout and for client and http
+- add nettrace
+- load testing
+- benchmarking
